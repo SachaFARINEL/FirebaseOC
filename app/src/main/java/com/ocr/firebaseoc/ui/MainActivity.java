@@ -1,4 +1,4 @@
-package com.ocr.firebaseoc;
+package com.ocr.firebaseoc.ui;
 
 import androidx.annotation.Nullable;
 
@@ -9,18 +9,18 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.ocr.firebaseoc.R;
 import com.ocr.firebaseoc.databinding.ActivityMainBinding;
-
+import com.ocr.firebaseoc.ui.manager.UserManager;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     private static final int RC_SIGN_IN = 123;
+
+    private final UserManager userManager = UserManager.getInstance();
 
     @Override
     ActivityMainBinding getViewBinding() {
@@ -34,9 +34,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
     private void setupListeners() {
-        // Login Button
+        // Login/Profile Button
         binding.loginButton.setOnClickListener(view -> {
-            startSignInActivity();
+            if (userManager.isCurrentUserLogged()) {
+                startProfileActivity();
+            } else {
+                startSignInActivity();
+            }
         });
     }
 
@@ -46,7 +50,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         List<AuthUI.IdpConfig> providers =
                 Arrays.asList(
                         new AuthUI.IdpConfig.EmailBuilder().build(),
-                        new AuthUI.IdpConfig.GoogleBuilder().build());
+                        new AuthUI.IdpConfig.GoogleBuilder().build(),
+                        new AuthUI.IdpConfig.FacebookBuilder().build());
 
         // Launch the activity
         startActivityForResult(
@@ -75,7 +80,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         if (requestCode == RC_SIGN_IN) {
             // SUCCESS
             if (resultCode == RESULT_OK) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 showSnackBar(getString(R.string.connection_succeed));
             } else {
                 // ERRORS
@@ -94,6 +98,23 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     private void showSnackBar(String message) {
         Snackbar.make(binding.mainLayout, message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateLoginButton();
+    }
+
+    // Launching Profile Activity
+    private void startProfileActivity() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+    }
+
+    // Update Login Button when activity is resuming
+    private void updateLoginButton() {
+        binding.loginButton.setText(userManager.isCurrentUserLogged() ? getString(R.string.button_login_text_logged) : getString(R.string.button_login_text_not_logged));
     }
 
 

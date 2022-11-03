@@ -26,12 +26,16 @@
     <string name="button_update_account">Mettre à jour le nom d\'utilisateur</string>
     <string name="button_delete_account">Supprimer mon compte</string>
     <string name="button_sign_out_account">Déconnexion</string>
-    <string name="info_no_email_found">Auncune adresse email</string>
+    <string name="info_no_email_found">Aucune adresse email</string>
     <string name="info_no_username_found">Aucun nom d\'utilisateur</string>
     <string name="popup_message_confirmation_delete_account">Es-tu sûr(e) de vouloir supprimer ton compte ?</string>
     <string name="popup_message_choice_yes">Oui !</string>
     <string name="popup_message_choice_no">Non</string>
     <string name="check_box_is_mentor">Etes-vous un mentor ?</string>
+
+    <!-- FACEBOOK LOGIN ACTIVITY -->
+    <string name="facebook_application_id" translatable="false">1205382853662617</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1205382853662617</string>
 
     <!-- MENTOR_CHAT ACTIVITY -->
     <string name="toolbar_title_mentor_chat_activity">Chats de discussions</string>
