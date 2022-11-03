@@ -1,4 +1,4 @@
-package com.ocr.firebaseoc.ui;
+package com.ocr.firebaseoc.firebaseoc.ui;
 
 import android.os.Bundle;
 import android.view.View;

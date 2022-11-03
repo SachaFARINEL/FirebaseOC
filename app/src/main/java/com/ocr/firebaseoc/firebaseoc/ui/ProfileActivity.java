@@ -1,4 +1,4 @@
-package com.ocr.firebaseoc.ui;
+package com.ocr.firebaseoc.firebaseoc.ui;
 
 import androidx.annotation.Nullable;
 
@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 
 
 import com.bumptech.glide.Glide;
@@ -13,10 +14,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseUser;
 import com.ocr.firebaseoc.R;
 import com.ocr.firebaseoc.databinding.ActivityProfileBinding;
-import com.ocr.firebaseoc.ui.manager.UserManager;
+import com.ocr.firebaseoc.firebaseoc.manager.UserManager;
 
 public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
-
+    //Controller
     private final UserManager userManager = UserManager.getInstance();
 
     @Override
@@ -27,13 +28,27 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     }
 
     private void setupListeners() {
-        binding.updateButton.setOnClickListener(view -> {
+
+        // Mentor Checkbox
+        binding.isMentorCheckBox.setOnCheckedChangeListener((compoundButton, checked) -> {
+            userManager.updateIsMentor(checked);
         });
+
+        // Update button
+        binding.updateButton.setOnClickListener(view -> {
+            binding.progressBar.setVisibility(View.VISIBLE);
+            userManager.updateUsername(binding.usernameEditText.getText().toString())
+                    .addOnSuccessListener(aVoid -> {
+                        binding.progressBar.setVisibility(View.INVISIBLE);
+                    });
+        });
+
         binding.signOutButton.setOnClickListener(view -> {
             userManager.signOut(this).addOnSuccessListener(aVoid -> {
                 finish();
             });
         });
+
         binding.deleteButton.setOnClickListener(view -> {
             new AlertDialog.Builder(this)
                     .setMessage(R.string.popup_message_confirmation_delete_account)
@@ -58,12 +73,22 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     private void updateUIWithUserData() {
         if (userManager.isCurrentUserLogged()) {
             FirebaseUser user = userManager.getCurrentUser();
+            getUserData();
 
             if (user.getPhotoUrl() != null) {
                 setProfilePicture(user.getPhotoUrl());
             }
             setTextUserData(user);
         }
+    }
+
+    private void getUserData() {
+        userManager.getUserData().addOnSuccessListener(user -> {
+            // Set the data with the user information
+            String username = TextUtils.isEmpty(user.getUsername()) ? getString(R.string.info_no_username_found) : user.getUsername();
+            binding.isMentorCheckBox.setChecked(user.getIsMentor());
+            binding.usernameEditText.setText(username);
+        });
     }
 
     private void setProfilePicture(Uri profilePictureUrl) {

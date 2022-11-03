@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".firebaseoc.ui.MainActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoTitle"> <!-- DISABLE TOOLBAR IN MAIN ACTIVITY -->
             <intent-filter>
@@ -24,10 +24,10 @@
         </activity>
 
         <activity
-            android:name=".ui.ProfileActivity"
+            android:name=".firebaseoc.ui.ProfileActivity"
             android:exported="false"
             android:label="@string/toolbar_title_login_activity"
-            android:parentActivityName=".ui.MainActivity">
+            android:parentActivityName=".firebaseoc.ui.MainActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

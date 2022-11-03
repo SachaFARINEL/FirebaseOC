@@ -1,4 +1,4 @@
-package com.ocr.firebaseoc.ui;
+package com.ocr.firebaseoc.firebaseoc.ui;
 
 import androidx.annotation.Nullable;
 
@@ -11,7 +11,7 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 import com.ocr.firebaseoc.R;
 import com.ocr.firebaseoc.databinding.ActivityMainBinding;
-import com.ocr.firebaseoc.ui.manager.UserManager;
+import com.ocr.firebaseoc.firebaseoc.manager.UserManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -80,6 +80,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         if (requestCode == RC_SIGN_IN) {
             // SUCCESS
             if (resultCode == RESULT_OK) {
+                userManager.createUser();
                 showSnackBar(getString(R.string.connection_succeed));
             } else {
                 // ERRORS
