@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">Firebase OC</string>
+    <string name="app_name" translatable="false">Firebase OC</string>
 
     <string name="main_activity_description">Discute avec tes mentors, tout simplement.</string>
 
-    <string name="login">Connexion</string>
+    <string name="login" translatable="false">Connexion</string>
     <string name="chat_with_mentor">Discute avec un mentor</string>
 
     <!-- NOTIFICATION SERVICE -->
